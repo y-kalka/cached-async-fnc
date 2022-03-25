@@ -2,6 +2,8 @@
 
 A typesafe function execution cache that prevents execution if the function gets the same arguments twice.
 
+![Demo](demo.gif)
+
 ## Install
 
 ```shell
@@ -40,6 +42,7 @@ console.log(data.userId)  // "0001"
 // This line gives us a typescript error because the .test property does not exists in the ReturnType of the "doSomeHeavyWork()" function
 console.log(data.test)
 ```
+For a demo go to [./demo.ts](./demo.ts)
 
 ## API
 TBD
