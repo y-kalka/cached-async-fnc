@@ -51,5 +51,5 @@ test("Cache uses cached data", async (t) => {
   const req2 = await cachedFnc.get();
 
   t.true(req1.ms > 1000);
-  t.true(req2.ms < 1);
+  t.true(req2.ms < 10);
 });
