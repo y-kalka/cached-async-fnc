@@ -1,27 +1,45 @@
 # cached-async-fnc
 
-A typesafe function execution cache.
+A typesafe function execution cache that prevents execution if the function gets the same arguments twice.
+
+## Install
+
+```shell
+# For npm
+npm install --save cached-async-fnc
+
+# For yarn
+yarn add --save cached-async-fnc
+
+# For pnpm
+pnpm install --save cached-async-fnc
+```
+
+## Getting started
 
 ```typescript
-// Create a resolver function. This function will be executed in case the cache has no response for this request
-const resolveFunction = async (userId: string) => {
+import { createCachedAsyncFnc } from "cached-async-fnc";
 
-  // Do your async task
-  const user = await fetchUserFromDb(userId)
+// Create a resolver function. This function will be executed in case the cache has no response for this request
+async function doSomeHeavyWork(userId: string) {
+
+  // Do the heavy work here ...
 
   return {
-    name: user.name,
-    age: user.age,
-    description: `${user.name} is ${user.age} years old`,
-  };
-};
+    userId: userId;
+  }
+}
 
-// Now create the cachedAsyncFnc instance.
-const cachedFnc = createCachedAsyncFnc(resolveFunction);
+const heavyWorkCache = createCachedAsyncFnc(doSomeHeavyWork)
 
 // Now request the cache to give you the data
-const data = await cachedFnc.get("0001");
+const { status, data, ms } = await heavyWorkCache.get("0001")
 
-console.log(data)       // { name: "Max", age: 23, description: "Max is 23 years old" }
-console.log(data.test)  // this throws a typescript error because the resolve function return type has no "test" field
+console.log(data.userId)  // "0001"
+
+// This line gives us a typescript error because the .test property does not exists in the ReturnType of the "doSomeHeavyWork()" function
+console.log(data.test)
 ```
+
+## API
+TBD

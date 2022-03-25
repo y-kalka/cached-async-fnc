@@ -8,7 +8,7 @@ type Options = {
 
 /**
  * @description
- * Creates a new function cache.
+ * This function creates a cachedAsyncFnc instance which you can use to execute the resolverFunction with different arguments.
  * @example
  * createCachedAsyncFnc(async (userId: string) => {
  *   const user = await fetchUser(userId);
@@ -24,13 +24,7 @@ export function createCachedAsyncFnc<
 >(resolveFunction: T, options?: Options) {
   const cache = new Map<string, Awaited<ReturnType<T>>>();
 
-  const get = async (
-    ...args: Parameters<T>
-  ): Promise<{
-    status: "HIT" | "MISS";
-    ms: number;
-    data: Awaited<ReturnType<T> | undefined>;
-  }> => {
+  const get = async (...args: Parameters<T>) => {
     const now = Date.now();
     const id = generateId(args);
     const response: {

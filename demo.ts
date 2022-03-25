@@ -45,8 +45,13 @@ async function main() {
   const startWith = Date.now();
 
   for (const name of names) {
-    const { data: welcome } = await cachedFunction.get(name);
-    console.log(welcome);
+    const { data: welcome, status } = await cachedFunction.get(name);
+
+    if (status === "HIT") {
+      console.log(welcome + " [CACHED]");
+    } else {
+      console.log(welcome);
+    }
   }
 
   console.log(`<- completed after ${Date.now() - startWith}ms`);
