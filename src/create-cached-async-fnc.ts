@@ -1,18 +1,10 @@
 import { generateId } from "./generate-id";
+import { toConsole } from "./to-console";
 
 type Options = {
   debugName?: string;
   debug: boolean;
 };
-
-const hit = `\x1b[1m\x1b[32mHIT\x1b[0m`;
-const miss = `\x1b[1m\x1b[31mMISS\x1b[0m`;
-
-function toLogLine(type: "HIT" | "MISS", args: any, id: string) {
-  return `cached-async-fnv: ${
-    type === "HIT" ? hit : miss
-  } cache for ${JSON.stringify(args)} (ID: ${id})`;
-}
 
 /**
  * @description
@@ -41,34 +33,37 @@ export function createCachedAsyncFnc<
   }> => {
     const now = Date.now();
     const id = generateId(args);
+    const response: {
+      status: "HIT" | "MISS";
+      ms: number;
+      data: Awaited<ReturnType<T> | undefined>;
+    } = {
+      status: "MISS",
+      ms: 0,
+      data: undefined,
+    };
 
     if (cache.has(id)) {
-      if (options?.debug === true) {
-        console.log(toLogLine("HIT", args, id));
-      }
+      response.status = "HIT";
+      response.data = cache.get(id);
+    } else {
+      // Resolve the promise
+      const resolvedData = await resolveFunction(...args);
 
-      return {
-        status: "HIT",
-        ms: Date.now() - now,
-        data: cache.get(id),
-      };
+      // Save the data to the cache
+      cache.set(id, resolvedData);
+
+      response.data = resolvedData;
     }
 
-    // Resolve the promise
-    const resolvedData = await resolveFunction(...args);
-
-    // Save the data to the cache
-    cache.set(id, resolvedData);
+    // Update the time
+    response.ms = Date.now() - now;
 
     if (options?.debug === true) {
-      console.log(toLogLine("MISS", args, id));
+      toConsole(response.status, args, id, response.ms);
     }
 
-    return {
-      status: "MISS",
-      ms: Date.now() - now,
-      data: resolvedData,
-    };
+    return response;
   };
 
   return { get };
