@@ -9,21 +9,47 @@ const resolveFunction = async (name: string, age: number) => {
   return `${name} is ${age} years old`;
 };
 
-const cachedFnc = createCachedAsyncFnc(resolveFunction);
-
 test("New calls are added to the cache", async (t) => {
-  t.false(cachedFnc.has("Max", 23));
-  await cachedFnc.get("Max", 23);
-  t.true(cachedFnc.has("Max", 23));
+  const cachedFnc = createCachedAsyncFnc(resolveFunction, { debug: true });
+
+  const req1 = await cachedFnc.get("Max", 23);
+  const req2 = await cachedFnc.get("Max", 23);
+
+  t.is(req1.status, "MISS");
+  t.is(req2.status, "HIT");
 });
 
 test("Returns the data of the resolveFunction", async (t) => {
-  const cached = await cachedFnc.get("Max", 23);
-  t.is(cached, "Max is 23 years old");
+  const cachedFnc = createCachedAsyncFnc(resolveFunction, { debug: true });
+
+  const { data } = await cachedFnc.get("Max", 23);
+
+  t.is(data, "Max is 23 years old");
 });
 
 test("Cache results for functions that return undefined", async (t) => {
-  t.false(cachedFnc.has("Max", 0));
-  await cachedFnc.get("Max", 0);
-  t.true(cachedFnc.has("Max", 0));
+  const cachedFnc = createCachedAsyncFnc(resolveFunction, { debug: true });
+
+  const req1 = await cachedFnc.get("Max", 0);
+  const req2 = await cachedFnc.get("Max", 0);
+
+  t.is(req1.status, "MISS");
+  t.is(req2.status, "HIT");
+});
+
+test("Cache uses cached data", async (t) => {
+  const cachedFnc = createCachedAsyncFnc(
+    () => {
+      return new Promise<string>((resolve) => {
+        setTimeout(() => resolve("ok"), 2000);
+      });
+    },
+    { debug: true }
+  );
+
+  const req1 = await cachedFnc.get();
+  const req2 = await cachedFnc.get();
+
+  t.true(req1.ms > 1000);
+  t.true(req2.ms < 1);
 });
