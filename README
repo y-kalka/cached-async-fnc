@@ -2,7 +2,7 @@
 
 A typesafe function cache.
 
-```typescript
+```ts
 
 // Create a resolver function. This function will be executed in case the cache has no response for this request
 const resolveFunction = async (userId: string) => {
