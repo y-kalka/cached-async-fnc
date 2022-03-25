@@ -25,7 +25,8 @@
     "build:esm": "tsc --outDir dist/esm --module es2020 --target es2020 src/index.ts",
     "build:types": "tsc --outDir dist/types --declaration --emitDeclarationOnly src/index.ts",
     "prepublish": "npm run build",
-    "postversion": "git push --follow-tags && npm publish"
+    "postversion": "git push --follow-tags && npm publish",
+    "demo": "ts-node demo.ts"
   },
   "keywords": [
     "async",

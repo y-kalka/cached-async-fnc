@@ -6,7 +6,7 @@ import { createCachedAsyncFnc } from "./src/index";
 */
 function welcomeUser(name: string) {
   return new Promise<string>(resolve => {
-    setTimeout(() => resolve(`Hi ${name}`), 200);
+    setTimeout(() => resolve(`Hi ${name}`), 400);
   });
 }
 
