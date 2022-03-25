@@ -18,8 +18,8 @@
     "fmt": "prettier --write src/.",
     "prebuild": "npm run test && del dist/*",
     "build": "npm run build:cjs && npm run build:esm && npm run build:types",
-    "build:cjs": "tsc --outDir dist/cjs --module commonjs src/index.ts",
-    "build:esm": "tsc --outDir dist/esm --module es2015 src/index.ts",
+    "build:cjs": "tsc --outDir dist/cjs --module commonjs --target es5 src/index.ts",
+    "build:esm": "tsc --outDir dist/esm --module es2020 --target es2020 src/index.ts",
     "build:types": "tsc --outDir dist/types --declaration --emitDeclarationOnly src/index.ts"
   },
   "keywords": [
