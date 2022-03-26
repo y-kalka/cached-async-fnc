@@ -10,7 +10,7 @@ type Options = {
  * @description
  * This function creates a cachedAsyncFnc instance which you can use to execute the resolverFunction with different arguments.
  * @example
- * createCachedAsyncFnc(async (userId: string) => {
+ * const cacheFnc = createCachedAsyncFnc(async (userId: string) => {
  *   const user = await fetchUser(userId);
  *
  *   return {
@@ -22,12 +22,24 @@ type Options = {
 export function createCachedAsyncFnc<
   T extends (...args: any[]) => Promise<any>
 >(resolveFunction: T, options?: Options) {
+  // Map to store Promise.resolve functions that will be resolved when the first if concurrent requests fulfills
   const waitingRequests = new Map<
     string,
     ((data: Awaited<ReturnType<T>>) => void)[]
   >();
+
+  // The main cache were all resolved requests will be stored
   const cache = new Map<string, Awaited<ReturnType<T>>>();
 
+  /**
+   * @description
+   * Query the cache.
+   * @example
+   * cacheFnc.get("001").then(({data}) => console.log(data))
+   *
+   * // or
+   * const {data} = await cacheFnc.get("001");
+   */
   const get = async (...args: Parameters<T>) => {
     const now = Date.now();
     const id = generateId(args);
@@ -44,25 +56,27 @@ export function createCachedAsyncFnc<
     if (cache.has(id)) {
       response.status = "HIT";
       response.data = cache.get(id);
-    } else if (waitingRequests.has(id) === true) {
-      /*
-      When a active request exists for this request wait until the first request completes.
-     */
+    }
+
+    // When a active request exists for this request wait until the first request completes.
+    else if (waitingRequests.has(id) === true) {
       // attach a defered resolve function to the active request
       const completed = new Promise<Awaited<ReturnType<T>>>((resolve) => {
         const defers = waitingRequests.get(id);
 
-        if (!defers) throw Error("Current request hasn't registered defers");
+        if (!defers) {
+          throw Error("Current request isn't registered in waitingRequests");
+        }
 
         defers.push(resolve);
       });
 
       response.status = "HIT";
       response.data = await completed;
-    } else {
-      /*
-      If no active request or cached request exists for this request. Execute it and save the response to cache
-     */
+    }
+
+    // If no active request or cached request exists for this request. Execute it and save the response to cache
+    else {
       // Register that there is a active request for this execution so new request will add a complete notifier
       waitingRequests.set(id, []);
 
@@ -80,13 +94,13 @@ export function createCachedAsyncFnc<
         for (const defered of defereds) {
           defered(resolvedData);
         }
-
-        // Now clear all data for this request from the defered map
-        waitingRequests.delete(id);
       }
+
+      // Now clear all data for this request from the waitingRequests map
+      waitingRequests.delete(id);
     }
 
-    // Update the time
+    // Calculate past time
     response.ms = Date.now() - now;
 
     if (options?.debug === true) {
