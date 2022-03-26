@@ -10,6 +10,7 @@ You can find the code for the demo [here](demo/demo.ts)
 - ✅&nbsp; Full type safety when using typescript
 - ☀️&nbsp; Lightweight. No other dependencies will come with this package
 - ♻️&nbsp; Supports concurrent requests. If the same query is executed twice all following queries will wait until the first one resolves and reuse the data
+- 🛠&nbsp; Available as CommonJS and ESM build
 
 ## Install
 
@@ -108,3 +109,7 @@ const response = await cache.get("Mark", 25);
 - - "MISS" the request was not cached and must be resolved with your `resolverFunction`
 - **data**: any => This is data your `resolverFunction` returns
 - **ms**: number => Time in miliseconds of the request
+
+## TODO's
+- [ ] Create a browser version
+- [ ] Create a Deno version
