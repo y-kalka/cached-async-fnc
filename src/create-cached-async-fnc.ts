@@ -45,8 +45,7 @@ export function createCachedAsyncFnc<
       response.status = "HIT";
       response.data = cache.get(id);
     } else if (waitingRequests.has(id) === true) {
-
-    /*
+      /*
       When a active request exists for this request wait until the first request completes.
      */
       // attach a defered resolve function to the active request
@@ -61,8 +60,7 @@ export function createCachedAsyncFnc<
       response.status = "HIT";
       response.data = await completed;
     } else {
-
-    /*
+      /*
       If no active request or cached request exists for this request. Execute it and save the response to cache
      */
       // Register that there is a active request for this execution so new request will add a complete notifier

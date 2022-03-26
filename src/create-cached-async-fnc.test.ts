@@ -11,7 +11,7 @@ const resolveFunction = async (name: string, age: number) => {
 };
 
 test("New calls are added to the cache", async (t) => {
-  const cachedFnc = createCachedAsyncFnc(resolveFunction, { debug: true });
+  const cachedFnc = createCachedAsyncFnc(resolveFunction);
 
   const req1 = await cachedFnc.get("Max", 23);
   const req2 = await cachedFnc.get("Max", 23);
@@ -21,7 +21,7 @@ test("New calls are added to the cache", async (t) => {
 });
 
 test("Returns the data of the resolveFunction", async (t) => {
-  const cachedFnc = createCachedAsyncFnc(resolveFunction, { debug: true });
+  const cachedFnc = createCachedAsyncFnc(resolveFunction);
 
   const { data } = await cachedFnc.get("Max", 23);
 
@@ -29,7 +29,7 @@ test("Returns the data of the resolveFunction", async (t) => {
 });
 
 test("Cache results for functions that return undefined", async (t) => {
-  const cachedFnc = createCachedAsyncFnc(resolveFunction, { debug: true });
+  const cachedFnc = createCachedAsyncFnc(resolveFunction);
 
   const req1 = await cachedFnc.get("Max", 0);
   const req2 = await cachedFnc.get("Max", 0);
@@ -39,14 +39,10 @@ test("Cache results for functions that return undefined", async (t) => {
 });
 
 test("Cache uses cached data", async (t) => {
-  const cachedFnc = createCachedAsyncFnc(
-    () => {
-      return new Promise<string>((resolve) => {
-        setTimeout(() => resolve("ok"), 2000);
-      });
-    },
-    { debug: true }
-  );
+  const cachedFnc = createCachedAsyncFnc(async () => {
+    await sleep(2000);
+    return "ok";
+  });
 
   const req1 = await cachedFnc.get();
   const req2 = await cachedFnc.get();
