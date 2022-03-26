@@ -5,6 +5,10 @@ A typesafe function execution cache that prevents execution if the function gets
 ![Demo](demo/demo.gif)
 You can find the code for the demo [here](demo/demo.ts)
 
+## Features
+- ✅&nbsp; Full type safety when using typescript
+- 🕊&nbsp; Lightweight. No other dependencies will come with this package
+
 ## Install
 
 ```shell
