@@ -1,4 +1,4 @@
-const { createCachedAsyncFnc } = require("cached-async-fnc")
+const { createCachedAsyncFnc } = require("cached-async-fnc");
 
 function wait(ms) {
   return new Promise((resolve) => {
