@@ -6,8 +6,10 @@ A typesafe function execution cache that prevents execution if the function gets
 You can find the code for the demo [here](demo/demo.ts)
 
 ## Features
+
 - ✅&nbsp; Full type safety when using typescript
-- 🕊&nbsp; Lightweight. No other dependencies will come with this package
+- ☀️&nbsp; Lightweight. No other dependencies will come with this package
+- ♻️&nbsp; Supports concurrent requests. If the same query is executed twice all following queries will wait until the first one resolves and reuse the data
 
 ## Install
 
@@ -27,7 +29,10 @@ pnpm install --save cached-async-fnc
 ```typescript
 import { createCachedAsyncFnc } from "cached-async-fnc";
 
-// Create a resolver function. This function will be executed in case the cache has no response for this request
+/*
+Create a resolver function. This function will be executed in case
+the cache has no response for this request
+*/
 async function doSomeHeavyWork(userId: string) {
 
   // Do the heavy work here ...
@@ -44,7 +49,10 @@ const { status, data, ms } = await heavyWorkCache.get("0001")
 
 console.log(data.userId)  // "0001"
 
-// This line gives us a typescript error because the .test property does not exists in the ReturnType of the "doSomeHeavyWork()" function
+/*
+This line gives us a typescript error because the .test property
+does not exists in the ReturnType of the "doSomeHeavyWork()" function
+*/
 console.log(data.test)
 ```
 

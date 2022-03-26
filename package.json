@@ -18,7 +18,7 @@
   ],
   "scripts": {
     "test": "ava",
-    "fmt": "prettier --write src/. demo/.",
+    "fmt": "prettier --write src/. demo/. README.md",
     "prebuild": "npm run test && del dist/*",
     "build": "npm run build:cjs && npm run build:esm && npm run build:types",
     "build:cjs": "tsc --outDir dist/cjs --module commonjs --target es5 src/index.ts",
