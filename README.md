@@ -84,7 +84,7 @@ const cache = createCachedAsyncFnc(resolveFnc, config);
 
 #### config
 
-- **debug**: Boolean => Send log messages to console.log
+- **debug**: boolean => Send log messages to console.log
 
 ### cache.get(`[...args]`): Promise
 
@@ -103,8 +103,8 @@ const response = await cache.get("Mark", 25);
 
 #### Response
 
-- **status** => The status tells you if the response were cached or not
+- **status**: string => The status tells you if the response were cached or not
 - - "HIT" the request was already cached
 - - "MISS" the request was not cached and must be resolved with your `resolverFunction`
-- **data** => This is data your `resolverFunction` returns
-- **ms** => Time in miliseconds of the request
+- **data**: any => This is data your `resolverFunction` returns
+- **ms**: number => Time in miliseconds of the request
