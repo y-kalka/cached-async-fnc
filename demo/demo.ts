@@ -5,11 +5,10 @@ import { createCachedAsyncFnc } from "../src/index";
   To mock some async operations we use a setTimeout to make the function execution longer
 */
 function welcomeUser(name: string) {
-  return new Promise<string>(resolve => {
+  return new Promise<string>((resolve) => {
     setTimeout(() => resolve(`Hi ${name}`), 400);
   });
 }
-
 
 async function main() {
   const cachedFunction = createCachedAsyncFnc(welcomeUser);
@@ -26,7 +25,7 @@ async function main() {
     "Kaitlyn",
     "Kaitlyn",
     "Kaitlyn",
-    "Marcos"
+    "Marcos",
   ];
 
   console.log("-> Welcome each user WITHOUT our cachedAsyncFnc instance");

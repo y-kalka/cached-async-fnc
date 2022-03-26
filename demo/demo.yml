@@ -1,6 +1,5 @@
 # The configurations that used for the recording, feel free to edit them
 config:
-
   # Specify a command to be executed
   # like `/bin/bash -l`, `ls`, or any other commands
   # the default is bash for Linux
@@ -112,13 +111,13 @@ config:
 # Records, feel free to edit them
 records:
   - delay: 170
-    content: 'n'
+    content: "n"
   - delay: 170
     content: p
   - delay: 170
     content: m
   - delay: 170
-    content: ' '
+    content: " "
   - delay: 170
     content: r
   - delay: 170
@@ -126,7 +125,7 @@ records:
   - delay: 170
     content: "n"
   - delay: 170
-    content: ' '
+    content: " "
   - delay: 170
     content: d
   - delay: 170
@@ -136,7 +135,7 @@ records:
   - delay: 170
     content: o
   - delay: 170
-    content: '.ts'
+    content: ".ts"
   - delay: 0
     content: "\r\n"
   - delay: 1500

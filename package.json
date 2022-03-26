@@ -18,7 +18,7 @@
   ],
   "scripts": {
     "test": "ava",
-    "fmt": "prettier --write src/.",
+    "fmt": "prettier --write src/. demo/.",
     "prebuild": "npm run test && del dist/*",
     "build": "npm run build:cjs && npm run build:esm && npm run build:types",
     "build:cjs": "tsc --outDir dist/cjs --module commonjs --target es5 src/index.ts",
@@ -28,7 +28,8 @@
     "postversion": "git push --follow-tags && npm publish",
     "demo": "ts-node demo/demo.ts",
     "record-demo": "npx terminalizer@^0.7.2 record demo/demo.yml --skip-sharing --command \"npm run demo\"",
-    "render-demo": "npx terminalizer@^0.7.2 render demo/demo.yml --output demo/demo.gif"
+    "render-demo": "npx terminalizer@^0.7.2 render demo/demo.yml --output demo/demo.gif",
+    "runkitExampleFilename": "demo/runkit.js"
   },
   "keywords": [
     "async",
