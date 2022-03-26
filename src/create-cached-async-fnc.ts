@@ -22,6 +22,10 @@ type Options = {
 export function createCachedAsyncFnc<
   T extends (...args: any[]) => Promise<any>
 >(resolveFunction: T, options?: Options) {
+  const waitingRequests = new Map<
+    string,
+    ((data: Awaited<ReturnType<T>>) => void)[]
+  >();
   const cache = new Map<string, Awaited<ReturnType<T>>>();
 
   const get = async (...args: Parameters<T>) => {
@@ -40,14 +44,48 @@ export function createCachedAsyncFnc<
     if (cache.has(id)) {
       response.status = "HIT";
       response.data = cache.get(id);
+    } else if (waitingRequests.has(id) === true) {
+
+    /*
+      When a active request exists for this request wait until the first request completes.
+     */
+      // attach a defered resolve function to the active request
+      const completed = new Promise<Awaited<ReturnType<T>>>((resolve) => {
+        const defers = waitingRequests.get(id);
+
+        if (!defers) throw Error("Current request hasn't registered defers");
+
+        defers.push(resolve);
+      });
+
+      response.status = "HIT";
+      response.data = await completed;
     } else {
+
+    /*
+      If no active request or cached request exists for this request. Execute it and save the response to cache
+     */
+      // Register that there is a active request for this execution so new request will add a complete notifier
+      waitingRequests.set(id, []);
+
       // Resolve the promise
       const resolvedData = await resolveFunction(...args);
 
       // Save the data to the cache
       cache.set(id, resolvedData);
-
       response.data = resolvedData;
+
+      // Notify all waiting requests
+      const defereds = waitingRequests.get(id);
+      if (defereds) {
+        // Complete all waiting requests
+        for (const defered of defereds) {
+          defered(resolvedData);
+        }
+
+        // Now clear all data for this request from the defered map
+        waitingRequests.delete(id);
+      }
     }
 
     // Update the time

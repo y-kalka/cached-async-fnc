@@ -1,5 +1,6 @@
 import test from "ava";
 import { createCachedAsyncFnc } from "./create-cached-async-fnc";
+import { sleep } from "./sleep";
 
 const resolveFunction = async (name: string, age: number) => {
   if (age === 0) {
@@ -52,4 +53,21 @@ test("Cache uses cached data", async (t) => {
 
   t.true(req1.ms > 1000);
   t.true(req2.ms < 10);
+});
+
+test("Use cache for concurrent requests", async (t) => {
+  const cachedFnc = createCachedAsyncFnc(async (name: string) => {
+    await sleep(2000);
+    return "Hi " + name;
+  });
+
+  const [req1, req2] = await Promise.all([
+    cachedFnc.get("Mark"),
+    cachedFnc.get("Mark"),
+  ]);
+
+  t.is(req1.status, "MISS");
+  t.is(req1.data, "Hi Mark");
+  t.is(req2.status, "HIT");
+  t.is(req2.data, "Hi Mark");
 });
