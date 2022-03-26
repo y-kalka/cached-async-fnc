@@ -27,8 +27,8 @@
     "prepublish": "npm run build",
     "postversion": "git push --follow-tags && npm publish",
     "demo": "ts-node demo/demo.ts",
-    "record-demo": "npx terminalizer@^0.7.2 record demo/demo.yml --skip-sharing --command \"npm run demo\"",
-    "render-demo": "npx terminalizer@^0.7.2 render demo/demo.yml --output demo/demo.gif"
+    "record-demo": "terminalizer record demo/demo.yml --skip-sharing --command \"npm run demo\"",
+    "render-demo": "terminalizer render demo/demo.yml --output demo/demo.gif"
   },
   "keywords": [
     "async",
@@ -46,6 +46,7 @@
     "ava": "^4.1.0",
     "del-cli": "^4.0.1",
     "prettier": "^2.6.1",
+    "terminalizer": "^0.7.2",
     "ts-node": "^10.7.0",
     "typescript": "^4.5.5"
   },
