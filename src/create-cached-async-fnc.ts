@@ -1,8 +1,7 @@
 import { generateId } from "./generate-id";
 import { toConsole } from "./to-console";
 
-type Options = {
-  debugName?: string;
+type Config = {
   debug: boolean;
 };
 
@@ -21,7 +20,7 @@ type Options = {
  */
 export function createCachedAsyncFnc<
   T extends (...args: any[]) => Promise<any>
->(resolveFunction: T, options?: Options) {
+>(resolveFunction: T, options?: Config) {
   // Map to store Promise.resolve functions that will be resolved when the first if concurrent requests fulfills
   const waitingRequests = new Map<
     string,
