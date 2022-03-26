@@ -25,6 +25,28 @@ yarn add --save cached-async-fnc
 pnpm install --save cached-async-fnc
 ```
 
+### Node - import
+
+```js
+import { createCachedAsyncFnc } from "cached-async-fnc";
+
+const cache = createCachedAsyncFnc(/*...*/);
+```
+
+### Node - require
+
+```js
+const cachedAsyncFnc = require("cached-async-fnc");
+
+const cache = cachedAsyncFnc.createCachedAsyncFnc(/*...*/);
+
+// OR
+
+const { createCachedAsyncFnc } = require("cached-async-fnc");
+
+const cache = createCachedAsyncFnc(/*...*/);
+```
+
 ## Getting started
 
 ```typescript
@@ -111,5 +133,6 @@ const response = await cache.get("Mark", 25);
 - **ms**: number => Time in miliseconds of the request
 
 ## TODO's
+
 - [ ] Create a browser version
 - [ ] Create a Deno version
