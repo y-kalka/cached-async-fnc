@@ -29,33 +29,82 @@ pnpm install --save cached-async-fnc
 ```typescript
 import { createCachedAsyncFnc } from "cached-async-fnc";
 
-/*
-Create a resolver function. This function will be executed in case
-the cache has no response for this request
-*/
-async function doSomeHeavyWork(userId: string) {
-
-  // Do the heavy work here ...
-
-  return {
-    userId: userId;
-  }
+// Small function to defer the promise for some time
+function wait(ms: number) {
+  return new Promise<void>((resolve) => {
+    setTimeout(() => resolve(), ms);
+  });
 }
 
-const heavyWorkCache = createCachedAsyncFnc(doSomeHeavyWork)
+// This is the resolve function which will be executed. The types of the params and return are used later when you query the cache.
+const resolveFnc = async (name: string) => {
+  // Wait 1 seconds to simulate some async work
+  await wait(1000);
 
-// Now request the cache to give you the data
-const { status, data, ms } = await heavyWorkCache.get("0001")
+  return "Hi " + name;
+};
 
-console.log(data.userId)  // "0001"
+// Now we create the cache instance
+const cache = createCachedAsyncFnc(resolveFnc);
 
-/*
-This line gives us a typescript error because the .test property
-does not exists in the ReturnType of the "doSomeHeavyWork()" function
-*/
-console.log(data.test)
+// Wrap the code into so we can use await
+async function main() {
+  const req1 = await cache.get("Mark");
+  const req2 = await cache.get("Mark");
+
+  // The first request will trigger the resolve function
+  console.log(req1.data, req1.status); // "Hi Mark", "MISS"
+
+  // The seconds request will reuse the data from cache
+  console.log(req2.data, req2.status); // "Hi Mark", "HIT"
+}
+
+main();
 ```
 
 ## API
 
-TBD
+### createCachedAsyncFnc(`resolverFunction, [options]`): cacheInstance
+
+This function creates a cache instance for the given function. The `parameter` and `return` types will be reused by the cache.
+
+```typescript
+const resolveFnc = async (name: string) => {
+  return "Hi " + name;
+};
+
+// optional config for the cache
+const config = {
+  debug: true,
+};
+
+// create the cache with the resolver function
+const cache = createCachedAsyncFnc(resolveFnc, config);
+```
+
+#### config
+
+- **debug**: Boolean => Send log messages to console.log
+
+### cache.get(`[...args]`): Promise
+
+Now you can query your configured `resolverFunction` with full type checks for the parameters.
+
+```typescript
+const resolveFnc = async (name: string, age: number) => {
+  return `${name} is ${age} years old`;
+};
+
+// create the cache with the resolver function
+const cache = createCachedAsyncFnc(resolveFnc);
+
+const response = await cache.get("Mark", 25);
+```
+
+#### Response
+
+- **status** => The status tells you if the response were cached or not
+- - "HIT" the request was already cached
+- - "MISS" the request was not cached and must be resolved with your `resolverFunction`
+- **data** => This is data your `resolverFunction` returns
+- **ms** => Time in miliseconds of the request
