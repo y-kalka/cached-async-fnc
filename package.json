@@ -28,8 +28,7 @@
     "postversion": "git push --follow-tags && npm publish",
     "demo": "ts-node demo/demo.ts",
     "record-demo": "npx terminalizer@^0.7.2 record demo/demo.yml --skip-sharing --command \"npm run demo\"",
-    "render-demo": "npx terminalizer@^0.7.2 render demo/demo.yml --output demo/demo.gif",
-    "runkitExampleFilename": "demo/runkit.js"
+    "render-demo": "npx terminalizer@^0.7.2 render demo/demo.yml --output demo/demo.gif"
   },
   "keywords": [
     "async",
@@ -68,5 +67,6 @@
   "bugs": {
     "url": "https://github.com/y-kalka/cached-async-fnc/issues"
   },
-  "homepage": "https://github.com/y-kalka/cached-async-fnc#readme"
+  "homepage": "https://github.com/y-kalka/cached-async-fnc#readme",
+  "runkitExampleFilename": "demo/runkit.js"
 }
