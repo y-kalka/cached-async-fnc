@@ -26,7 +26,8 @@
     "build:types": "tsc --outDir dist/types --declaration --emitDeclarationOnly src/index.ts",
     "prepublish": "npm run build",
     "postversion": "git push --follow-tags && npm publish",
-    "demo": "ts-node demo.ts"
+    "demo": "ts-node demo/demo.ts",
+    "render-demo": "npx terminalizer@^0.7.2 render demo/demo.yml --output demo/demo.gif"
   },
   "keywords": [
     "async",

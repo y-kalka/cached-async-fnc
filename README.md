@@ -2,8 +2,8 @@
 
 A typesafe function execution cache that prevents execution if the function gets the same arguments twice.
 
-![Demo](demo.gif)
-You can find the code for the demo [here](./demo.ts)
+![Demo](demo/demo.gif)
+You can find the code for the demo [here](demo/demo.ts)
 
 ## Install
 

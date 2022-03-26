@@ -1,4 +1,4 @@
-import { createCachedAsyncFnc } from "./src/index";
+import { createCachedAsyncFnc } from "../src/index";
 
 /*
   In our example we wan't to generate a welcome message for each user.
