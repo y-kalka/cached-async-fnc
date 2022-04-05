@@ -14,5 +14,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 - Removed a unused config property `debugName` from config type
+- Removed npm engine version from package.json
 
 ## [1.0.0] - 2022-03-26
