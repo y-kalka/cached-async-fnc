@@ -37,7 +37,10 @@
     "functions",
     "typescript",
     "ts",
-    "concurrent"
+    "typed",
+    "concurrent",
+    "memoize",
+    "memoization"
   ],
   "author": "",
   "license": "MIT",
