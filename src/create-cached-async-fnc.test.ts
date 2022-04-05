@@ -67,3 +67,23 @@ test("Use cache for concurrent requests", async (t) => {
   t.is(req2.status, "HIT");
   t.is(req2.data, "Hi Mark");
 });
+
+test("Should not mutate the cached version", async (t) => {
+  const cachedFnc = createCachedAsyncFnc(async (name: string) => {
+    return {
+      name,
+      age: 21,
+    };
+  });
+
+  const req1 = await cachedFnc.get("Mark");
+
+  if (req1.data) {
+    req1.data.age = 22;
+  }
+
+  const req2 = await cachedFnc.get("Mark");
+
+  t.is(req2.data?.age, 21);
+  t.assert(req1.data !== req2.data);
+});

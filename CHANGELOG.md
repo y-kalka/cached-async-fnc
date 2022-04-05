@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Update documentation
+- Modifying of objects from cache are no longer mutating the cached version
 
 ### Removed
 
