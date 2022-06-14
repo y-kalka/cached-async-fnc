@@ -11,6 +11,6 @@ export function toConsole(
   const time = dim(`+${ms}ms`);
   const status = type === "HIT" ? hit : miss;
   const argsAsString = JSON.stringify(args);
-  const logline = `cached-async-fnv: ${status} cache for ${argsAsString} (ID: ${id}) ${time}`;
+  const logline = `cached-async-fnc: ${status} cache for ${argsAsString} (ID: ${id}) ${time}`;
   console.log(logline);
 }
