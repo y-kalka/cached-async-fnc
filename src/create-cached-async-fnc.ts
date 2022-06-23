@@ -55,7 +55,7 @@ export function createCachedAsyncFnc<
 
     if (cache.has(id)) {
       response.status = "HIT";
-      response.data = cloneDeep(cache.get(id));
+      response.data = cache.get(id);
     }
 
     // When a active request exists for this request wait until the first request completes.
@@ -72,7 +72,7 @@ export function createCachedAsyncFnc<
       });
 
       response.status = "HIT";
-      response.data = cloneDeep(await completed);
+      response.data = await completed;
     }
 
     // If no active request or cached request exists for this request. Execute it and save the response to cache
@@ -85,7 +85,7 @@ export function createCachedAsyncFnc<
 
       // Save the data to the cache
       cache.set(id, resolvedData);
-      response.data = cloneDeep(resolvedData);
+      response.data = resolvedData;
 
       // Notify all waiting requests
       const defereds = waitingRequests.get(id);

@@ -5,7 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - [Changes since v1.0.0](https://github.com/y-kalka/cached-async-fnc/compare/v1.0.0...main)
+<!-- ## [unreleased] - [Changes since v1.0.0](https://github.com/y-kalka/cached-async-fnc/compare/v1.0.2...v1.0.3) -->
+
+## [1.0.2] - [Changes since v1.0.0](https://github.com/y-kalka/cached-async-fnc/compare/v1.0.1...v1.0.2)
+
+### Changed
+
+- Remove the immutability of cache items [#3](https://github.com/y-kalka/cached-async-fnc/issues/3)
+
+## [1.0.1] - [Changes since v1.0.0](https://github.com/y-kalka/cached-async-fnc/compare/v1.0.0...v1.0.1)
 
 ### Changed
 
