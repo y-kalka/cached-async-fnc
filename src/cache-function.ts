@@ -12,6 +12,10 @@ export class CachedFunction<T extends (...args: any[]) => any> {
   #serializeArgsToId(...args: unknown[]): string {
     let id = "";
 
+    if (!args || args.length === 0) {
+      throw Error("Can not generate a cached ID without any arguments");
+    }
+
     for (let i = 0; i < args.length; i++) {
       const arg = args[i];
 
@@ -25,6 +29,10 @@ export class CachedFunction<T extends (...args: any[]) => any> {
       } else {
         throw Error(`Argument ${i + 1} is not serializeable`);
       }
+    }
+
+    if (!id) {
+      throw Error("Empty cache id generated");
     }
 
     return id;
