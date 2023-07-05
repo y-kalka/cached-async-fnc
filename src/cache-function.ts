@@ -9,7 +9,7 @@ export class CachedFunction<T extends (...args: any[]) => any> {
     this.#fnc = fnc;
   }
 
-  #serializeArgsToId(...args: unknown[]): string {
+  #serializeArgsToId(args: unknown[]): string {
     let id = "";
 
     if (!args || args.length === 0) {
