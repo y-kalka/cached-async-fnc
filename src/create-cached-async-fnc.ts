@@ -8,7 +8,7 @@ type Config = {
 /**
  * @description
  * This function creates a cachedAsyncFnc instance which you can use to execute the resolverFunction with different arguments.
- * @deprecated This function will be removed in v2 please migrate to the CachedFunction class
+ * @deprecated This function will be removed in v3 please migrate to the CachedFunction class
  * @example
  * const cacheFnc = createCachedAsyncFnc(async (userId: string) => {
  *   const user = await fetchUser(userId);
