@@ -24,7 +24,7 @@
     "build": "npm run build:cjs && npm run build:esm && npm run build:types",
     "build:cjs": "tsc --outDir dist/cjs --module commonjs --target es2015 src/index.ts",
     "build:esm": "tsc --outDir dist/esm --module es2020 --target es2020 src/index.ts",
-    "build:types": "tsc --outDir dist/types --declaration --emitDeclarationOnly src/index.ts",
+    "build:types": "tsc --outDir dist/types --declaration --target es2015 --emitDeclarationOnly src/index.ts",
     "prepublish": "npm run build",
     "postversion": "git push --follow-tags && npm publish",
     "demo": "ts-node demo/demo.ts",
