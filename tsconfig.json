@@ -5,6 +5,7 @@
     "outDir": "dist",
     "strict": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "target": "ES2015"
   }
 }
